@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import colors from './utils/colors';
 import { scale } from './utils/scale';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import axios from 'axios';
-import {useQuery} from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const HomePage = () => {
     const data = [
@@ -21,20 +20,18 @@ const HomePage = () => {
             trend: '-0.66%'
         }
     ]
-    const { isLoading, error, data: {data: {data:responseData = []} = {}} = {} } = useQuery('fetch-data', () =>
-        axios('https://data.messari.io/api/v2/assets?with-metrics'))
+    const currencies = useSelector(({ selectedCurrencies }) => selectedCurrencies);
 
-    useEffect(() => {
-        if(responseData.length > 0){
-            console.log('here data', responseData);
-        }
-    }, [responseData])
-
-    const renderRow = () => {
+    const renderRow = ({item}) => {
+        const url ='https://messari.io/asset-images/'+item.id+'/32.png'
         return (
             <View style={styles.row}>
                 <View style={styles.rowImageContainer}>
-                    <Icon name="add" size={scale(22)} color={colors.grey} />
+                <Image
+                    source={{ uri: url}}
+                    style={{ width:32, height: 32, borderRadius: 16}}
+                    resizeMode="contain"
+             />
                 </View>
                 <View style={{ flex: 1 }}>
                     <View style={styles.rowContent}>
@@ -49,16 +46,22 @@ const HomePage = () => {
             </View>
         );
     }
-
+if (currencies?.length > 0) {
     return (
         <View style={styles.container}>
             <FlatList
-                data={data}
+                data={currencies}
                 renderItem={renderRow}
-                keyExtractor={item => item.currency}
+                keyExtractor={item => item.id+''}
             />
         </View>
     )
+} 
+return (
+    <View style={styles.textContainer}>
+        <Text style={styles.placeholderText}>No Currency Added yet!</Text>
+    </View>
+)
 }
 
 export default HomePage;
@@ -74,16 +77,28 @@ const styles = StyleSheet.create({
         paddingVertical: scale(5),
         flexDirection: 'row', 
         marginHorizontal: scale(5), 
-        marginTop: scale(5) 
+        marginTop: scale(5),
     },
     rowImageContainer: { 
-        backgroundColor: colors.grey2, 
-        borderRadius: scale(22), 
-        marginHorizontal: scale(10) 
-    },
+        backgroundColor: colors.white, 
+        width:32, 
+        height: 32,
+        borderRadius: 16, 
+        margin: scale(10),
+    },  
     rowContent: { 
         flexDirection: 'row', 
         marginVertical: scale(5), 
         justifyContent: 'space-between' 
+    },
+    textContainer: {
+        flex: 1,
+        backgroundColor: colors.grey2,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    placeholderText: {
+        color: colors.grey,
+        fontSize: 20
     }
 })

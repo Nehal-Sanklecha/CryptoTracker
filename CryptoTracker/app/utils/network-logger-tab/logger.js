@@ -1,6 +1,5 @@
 import { setConsole } from 'react-query';
 
-/* eslint-disable no-console */
 const noop = () => {};
 
 setConsole({
