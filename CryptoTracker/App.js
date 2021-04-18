@@ -21,7 +21,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaView style={{ backgroundColor: 'transparent', flex: 1 }}>
+        <SafeAreaView style={{ backgroundColor: colors.white, flex: 1 }}>
           <NavigationContainer
             theme={{
               dark: false,

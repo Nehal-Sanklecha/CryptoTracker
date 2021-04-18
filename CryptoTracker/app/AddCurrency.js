@@ -10,13 +10,13 @@ import {setSelectedCurrencies} from './actions';
 const AddCurrency = (props) => {
 
     const { cryptoCurrencies } = useCryptoCurrencyData()
-    const [selectedItems, setSelectedItems] = useState([]);
     const currencies = useSelector(({ selectedCurrencies }) => selectedCurrencies);
+    const [selectedItems, setSelectedItems] = useState(currencies || []);
     const dispatch = useDispatch();
     
     const addAction = () => {
         if(selectedItems.length > 0) {
-            dispatch(setSelectedCurrencies([...currencies, ...selectedItems]))
+            dispatch(setSelectedCurrencies([...selectedItems]))
             props.navigation.goBack();
         }
     }
