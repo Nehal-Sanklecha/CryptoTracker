@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Swipeout from 'react-native-swipeout';
 import {removeCurrency} from './actions';
+import { useCryptoCurrencyData } from './hooks';
 
 
 const HomePage = () => {
-
+    useCryptoCurrencyData()
     const currencies = useSelector(({ selectedCurrencies }) => selectedCurrencies);
     const dispatch = useDispatch();
 
@@ -24,8 +25,9 @@ const HomePage = () => {
 
     const renderRow = ({ item }) => {
         const url = 'https://messari.io/asset-images/' + item.id + '/32.png'
-        const price = item.metrics.market_data.price_usd.toFixed(2)
-        let changeInPrice = item.metrics.market_data.percent_change_usd_last_24_hours.toFixed(2)
+        const latestItem = currencies?.find(ele => ele.id === item.id)
+        const price =     latestItem?.price?.toFixed(2)
+        let changeInPrice = latestItem?.change?.toFixed(2)
         const iconProps = getTrendIconAndColor(changeInPrice)
         const swipeoutBtns = [
             {

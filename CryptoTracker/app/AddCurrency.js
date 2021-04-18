@@ -1,66 +1,127 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import SearchableDropdown from 'react-native-searchable-dropdown';
-import { useCryptoCurrencyData } from './hooks';
+import React, { useState, useMemo, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, ScrollView } from 'react-native';
 import colors from './utils/colors';
 import { scale } from './utils/scale';
 import { useDispatch, useSelector } from 'react-redux';
-import {setSelectedCurrencies} from './actions';
+import { setSelectedCurrencies } from './actions';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const AddCurrency = (props) => {
 
-    const { cryptoCurrencies } = useCryptoCurrencyData()
-    const currencies = useSelector(({ selectedCurrencies }) => selectedCurrencies);
-    const [selectedItems, setSelectedItems] = useState(currencies || []);
+    const cryptoCurrencies = useSelector(({ currencies }) => currencies);
+    const selectedCurrencies = useSelector(({ selectedCurrencies }) => selectedCurrencies);
+    const [selectedItems, setSelectedItems] = useState(selectedCurrencies);
     const dispatch = useDispatch();
+    const [searchText, setSearchText] = useState('')
+
+    const listData = useMemo(() => {
+        if (searchText === '') {
+            return cryptoCurrencies
+        } else {
+            return cryptoCurrencies.filter(item => item.name.toUpperCase().includes(searchText.toUpperCase())
+            )
+        }
+    }, [searchText, cryptoCurrencies])
     
     const addAction = () => {
-        if(selectedItems.length > 0) {
+        if (selectedItems.length > 0) {
             dispatch(setSelectedCurrencies([...selectedItems]))
             props.navigation.goBack();
         }
     }
 
+    const onSelection = (item) => {
+        const items = selectedItems;
+        items.push(item)
+        setSelectedItems([...items]);
+    }
+
+    const onUnSelection = (item) => {
+        const items = selectedItems.filter((sitem) => sitem.id !== item.id);
+        setSelectedItems([...items]);
+    }
+
+    const isItemSelected = (item) => {
+        return selectedItems.find(i => i.id === item.id)
+    }
+
+    const onRowPress = (itemSelected) => {
+        const isSelected = isItemSelected(itemSelected);
+        isSelected ? onUnSelection(itemSelected) : onSelection(itemSelected)
+
+    }
+
+    const renderElement = ({ item, index }) => {
+        let isSelected = isItemSelected(item);
+        return (
+            <RowItem
+                onPress={onRowPress}
+                index={index}
+                item={item}
+                value={item.name}
+                selected={isSelected}
+            />
+        )
+    };
+
+    let renderSeparator = () => {
+        return <View style={styles.separator} />
+    };
+
     return (
         <View style={styles.container}>
-            <SearchableDropdown
-                multi={true}
-                selectedItems={selectedItems}
-                onItemSelect={(item) => {
-                    const items = selectedItems;
-                    items.push(item)
-                    setSelectedItems(items);
-                }}
-                containerStyle={{ padding: 5, flex:1, }}
-                onRemoveItem={(item, index) => {
-                    const items = selectedItems.filter((sitem) => sitem.id !== item.id);
-                    setSelectedItems(items);
-                }}
-                itemStyle={styles.row}
-                itemTextStyle={{ color: '#222' }}
-                itemsContainerStyle={{ maxHeight: 200 }}
-                items={cryptoCurrencies}
-                defaultIndex={-1}
-                chip={true}
-                resetValue={false}
-                textInputProps={
-                    {
-                        placeholder: "Search currency",
-                        underlineColorAndroid: "transparent",
-                        style: styles.textInputStyle,
-                    }
-                }
-                listProps={
-                    {
-                        nestedScrollEnabled: true,
-                    }
-                }
-            />
+            <ScrollView>
+                <TextInput
+                    style={styles.input}
+                    value={searchText}
+                    placeholder=" Search Currency"
+                    onEndEditing={() => { }}
+                    onChangeText={(text) => {
+                        setSearchText(text)
+                    }}
+                />
+                <FlatList
+                    data={listData}
+                    contentContainerStyle={styles.searchListContainer}
+                    renderItem={renderElement}
+                    keyExtractor={item => item.id}
+                    keyboardShouldPersistTaps={'always'}
+                    keyboardDismissMode={"none"}
+                    ItemSeparatorComponent={renderSeparator}
+                    extraData={selectedItems}
+                />
+            </ScrollView>
             <TouchableOpacity style={styles.addButton} onPress={addAction}>
                 <Text style={styles.placeholderText}>ADD</Text>
             </TouchableOpacity>
         </View>
     )
+}
+
+
+function RowItem(props) {
+
+    let renderIcon = () => {
+        return (
+            <Icon
+                name="done"
+                color={colors.activeGreen}
+                size={scale(30)}
+            />);
+    };
+
+    let renderText = () => {
+        return <Text style={styles.placeholderText} numberOfLines={1}>{props.value}</Text>
+    };
+    return (
+        <TouchableOpacity style={styles.row} onPress={() => {
+            props?.onPress(props.item)
+        }}
+        >
+            {renderText()}
+            {props.selected && renderIcon()}
+        </TouchableOpacity>
+    );
 }
 
 export default AddCurrency;
@@ -71,12 +132,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white
     },
     row: {
-        padding: 10,
+        padding: scale(10),
+        marginHorizontal: scale(5),
         marginTop: 2,
-        backgroundColor: colors.grey2,
-        borderColor: colors.grey2,
-        borderWidth: 1,
-        borderRadius: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     textInputStyle: {
         padding: 12,
@@ -97,5 +157,20 @@ const styles = StyleSheet.create({
     placeholderText: {
         color: colors.grey,
         fontSize: 20
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        borderColor: colors.grey2,
+        paddingHorizontal: scale(5)
+    },
+    searchListContainer: {
+        marginTop: scale(5)
+    },
+    separator: {
+        backgroundColor: colors.grey2,
+        height: 1,
+        marginHorizontal: scale(5),
     }
 })

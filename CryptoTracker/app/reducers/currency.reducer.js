@@ -11,3 +11,11 @@ export const selectedCurrencies = (state = [], action) => {
     };
     return state
 }
+
+export const currencies = (state = {}, action) => {
+    switch (action.type) {
+        case "SET_CURRENCIES":
+            return  action.payload;            
+    };
+    return state
+}
