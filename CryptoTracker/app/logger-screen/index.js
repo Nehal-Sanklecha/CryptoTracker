@@ -60,8 +60,7 @@ const LoggerScreen = () => {
                 </TouchableOpacity>
                 <View
                     style={styles.statusContainer}
-                    testID="containers-logger-index-view-3"
-                    accessibilityLabel="containers-logger-index-view-3">
+                    >
                     <Text
                         style={styles.statusStaticText}
                     >

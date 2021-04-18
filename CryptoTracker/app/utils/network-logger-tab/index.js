@@ -64,26 +64,23 @@ const NetworkLoggerTab = () => {
     return (
         status === 'ON' &&
         networkLoggerVisible === 'ON' &&
-            <TouchableOpacity
-                onPress={() => onTabPress()}
-                testID="containers-network-logger-tab-index-touchableopacity-0"
-                accessibilityLabel="containers-network-logger-tab-index-touchableopacity-0">
-                <View
-                    style={{ backgroundColor: colors.activeGreen, paddingVertical: 4 }}
-                    testID="containers-network-logger-tab-index-view-1"
-                    accessibilityLabel="containers-network-logger-tab-index-view-1">
-                    <Text
-                        style={{
-                            fontSize: 13,
-                            paddingLeft: scale(20),
-                            color: colors.colorWhite,
-                        }}
-                        testID="containers-network-logger-tab-index-text-2"
-                        accessibilityLabel="containers-network-logger-tab-index-text-2">
-                        Logger Active Now • : Tap to view
+        <TouchableOpacity
+            onPress={() => onTabPress()}
+        >
+            <View
+                style={{ backgroundColor: colors.activeGreen, paddingVertical: 4 }}
+            >
+                <Text
+                    style={{
+                        fontSize: 13,
+                        paddingLeft: scale(20),
+                        color: colors.colorWhite,
+                    }}
+                >
+                    Logger Active Now • : Tap to view
                     </Text>
-                </View>
-            </TouchableOpacity>
+            </View>
+        </TouchableOpacity>
     );
 };
 
