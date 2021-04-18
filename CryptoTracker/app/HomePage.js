@@ -43,7 +43,7 @@ const HomePage = (props) => {
                     <View style={styles.rowImageContainer}>
                         <Image
                             source={{ uri: url }}
-                            style={{ width: 32, height: 32, borderRadius: 16 }}
+                            style={styles.imageIcon}
                             resizeMode="contain"
                         />
                     </View>
@@ -54,7 +54,7 @@ const HomePage = (props) => {
                         </View>
                         <View style={styles.rowContent}>
                             <Text>{item.symbol}</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+                            <View style={styles.change}>
                                 <Icon name={iconProps.iconName} size={scale(18)} color={iconProps.iconColor} />
                                 <Text style={{ color: iconProps.iconColor }}> {Math.abs(changeInPrice)}</Text>
                             </View>
@@ -123,5 +123,15 @@ const styles = StyleSheet.create({
     placeholderText: {
         color: colors.grey,
         fontSize: 20
+    },
+    change: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    imageIcon: {
+        width: 32,
+        height: 32,
+        borderRadius: 16
     }
 })
