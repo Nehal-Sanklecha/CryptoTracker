@@ -3,27 +3,23 @@ import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import colors from './utils/colors';
 import { scale } from './utils/scale';
 import { useDispatch, useSelector } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 const HomePage = () => {
-    const data = [
-        {
-            currency: 'Bitcoin',
-            name: 'BTC',
-            currentPrice: '$7,215.88',
-            trend: '1.82%'
-        },
-        {
-            currency: 'XRP',
-            name: 'XRP',
-            currentPrice: '$5,205.33',
-            trend: '-0.66%'
-        }
-    ]
+
     const currencies = useSelector(({ selectedCurrencies }) => selectedCurrencies);
+
+    const getTrendIconAndColor = (change) => {
+        return change > 0 ? {iconName: 'trending-up', iconColor: colors.activeGreen} : {iconName: 'trending-down', iconColor: colors.errorRed}
+    }
 
     const renderRow = ({item}) => {
         const url ='https://messari.io/asset-images/'+item.id+'/32.png'
+        const price = item.metrics.market_data.price_usd.toFixed(2)
+        let changeInPrice = item.metrics.market_data.percent_change_usd_last_24_hours.toFixed(2)
+        const iconProps = getTrendIconAndColor(changeInPrice)
+        
         return (
             <View style={styles.row}>
                 <View style={styles.rowImageContainer}>
@@ -35,12 +31,15 @@ const HomePage = () => {
                 </View>
                 <View style={{ flex: 1 }}>
                     <View style={styles.rowContent}>
-                        <Text>Bitcoin</Text>
-                        <Text>721588</Text>
+                        <Text>{item.name}</Text>
+                        <Text>${price}</Text>
                     </View>
                     <View style={styles.rowContent}>
-                        <Text>Bitcoin</Text>
-                        <Text>721588</Text>
+                        <Text>{item.symbol}</Text>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',}}>
+                            <Icon name={iconProps.iconName} size={scale(18)} color={iconProps.iconColor}/>
+                        <Text> {Math.abs(changeInPrice)}</Text>
+                        </View>
                     </View>
                 </View>
             </View>

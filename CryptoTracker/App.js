@@ -3,48 +3,51 @@ import React, { useRef, useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
 import colors from './app/utils/colors';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
+import {store, persistor} from './app/store';
 import { NavigationContainer } from '@react-navigation/native';
 import NoInternet from './app/utils/no-internet';
 import AppNavigator from './app/routes';
 import NetworkLoggerTab from './app/utils/network-logger-tab'
 import { navigationRef, isReadyRef } from './app/utils/navigation-service';
+import { PersistGate } from 'redux-persist/integration/react'
 
 const App = () => {
   const routeNameRef = useRef();
   useEffect(() => {
     return () => {
-        isReadyRef.current = false;
+      isReadyRef.current = false;
     };
-}, []);
+  }, []);
   return (
     <Provider store={store}>
-      <SafeAreaView style={{ backgroundColor: 'transparent', flex: 1 }}>
-        <NavigationContainer
-          theme={{
-            dark: false,
-            colors: {
-              background: colors.white,
-            },
-          }}
-          ref={navigationRef}
+      <PersistGate loading={null} persistor={persistor}>
+        <SafeAreaView style={{ backgroundColor: 'transparent', flex: 1 }}>
+          <NavigationContainer
+            theme={{
+              dark: false,
+              colors: {
+                background: colors.white,
+              },
+            }}
+            ref={navigationRef}
             onReady={() => {
-                isReadyRef.current = true;
-                routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+              isReadyRef.current = true;
+              routeNameRef.current = navigationRef.current.getCurrentRoute().name;
             }}
             onStateChange={async () => {
-                const previousRouteName = routeNameRef.current;
-                const currentRouteName = navigationRef.current.getCurrentRoute().name;
-                routeNameRef.current = currentRouteName;
+              const previousRouteName = routeNameRef.current;
+              const currentRouteName = navigationRef.current.getCurrentRoute().name;
+              routeNameRef.current = currentRouteName;
             }}
-        >
-          <>
-            <NetworkLoggerTab />
-            <AppNavigator navigation={navigationRef.current} />
-          </>
-        </NavigationContainer>
-      </SafeAreaView>
-      <NoInternet />
+          >
+            <>
+              <NetworkLoggerTab />
+              <AppNavigator navigation={navigationRef.current} />
+            </>
+          </NavigationContainer>
+        </SafeAreaView>
+        <NoInternet />
+      </PersistGate>
     </Provider>
   );
 }

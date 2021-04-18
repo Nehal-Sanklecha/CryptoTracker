@@ -15,8 +15,10 @@ const AddCurrency = (props) => {
     const dispatch = useDispatch();
     
     const addAction = () => {
-        dispatch(setSelectedCurrencies([...currencies, ...selectedItems]))
-        props.navigation.goBack();
+        if(selectedItems.length > 0) {
+            dispatch(setSelectedCurrencies([...currencies, ...selectedItems]))
+            props.navigation.goBack();
+        }
     }
 
     return (
