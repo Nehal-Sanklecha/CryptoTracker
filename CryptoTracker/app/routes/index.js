@@ -11,20 +11,6 @@ import colors from '../utils/colors';
 
 const Stack = createStackNavigator();
 
-const AddCurrencyIcon = () => {
-    const navigation = useNavigation()
-    return(
-        <View style={styles.addButton}>
-            <TouchableOpacity hitSlop={{top:20, bottom: 20, left: 20, right: 20}} onPress={() => {
-                navigation.navigate("Add Currency")
-            }}>
-                <Icon name="add" size={scale(22)} color={colors.grey} />
-            </TouchableOpacity>
-        </View>
-    )
-    return null;
-}
-
 const BackIcon = () => {
     const navigation = useNavigation()
     return(
@@ -41,9 +27,7 @@ const BackIcon = () => {
 const HomeStack = () => {
     return (
         <Stack.Navigator initialRouteName="CryptoTracker Pro">
-            <Stack.Screen name="CryptoTracker Pro" component={HomePage} options={() => ({
-                headerRight: () => <AddCurrencyIcon/>
-            })}/>
+            <Stack.Screen name="CryptoTracker Pro" component={HomePage} />
             <Stack.Screen name="Add Currency" component={AddCurrency} options={() => ({
                 headerLeft: () => <BackIcon/>
             })}/>

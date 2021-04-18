@@ -70,7 +70,6 @@ const AddCurrency = (props) => {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
                 <TextInput
                     style={styles.input}
                     value={searchText}
@@ -90,9 +89,8 @@ const AddCurrency = (props) => {
                     ItemSeparatorComponent={renderSeparator}
                     extraData={selectedItems}
                 />
-            </ScrollView>
             <TouchableOpacity style={styles.addButton} onPress={addAction}>
-                <Text style={styles.placeholderText}>ADD</Text>
+                <Text style={styles.addText}>ADD</Text>
             </TouchableOpacity>
         </View>
     )
@@ -106,7 +104,7 @@ function RowItem(props) {
             <Icon
                 name="done"
                 color={colors.activeGreen}
-                size={scale(30)}
+                size={scale(20)}
             />);
     };
 
@@ -145,17 +143,21 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     addButton: {
-        marginVertical: scale(15),
+        marginVertical: scale(10),
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: scale(10),
-        backgroundColor: colors.grey2,
-        paddingVertical: scale(15),
+        backgroundColor: colors.brand,
+        paddingVertical: scale(10),
         borderColor: colors.grey,
         borderRadius: 12
     },
     placeholderText: {
         color: colors.grey,
+        fontSize: 20
+    },
+    addText: {
+        color: colors.white,
         fontSize: 20
     },
     input: {

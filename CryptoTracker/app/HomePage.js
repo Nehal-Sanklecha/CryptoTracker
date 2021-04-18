@@ -5,11 +5,12 @@ import { scale } from './utils/scale';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Swipeout from 'react-native-swipeout';
-import {removeCurrency} from './actions';
+import { removeCurrency } from './actions';
 import { useCryptoCurrencyData } from './hooks';
+import ActionButton from 'react-native-action-button';
 
 
-const HomePage = () => {
+const HomePage = (props) => {
     useCryptoCurrencyData()
     const currencies = useSelector(({ selectedCurrencies }) => selectedCurrencies);
     const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const HomePage = () => {
     const renderRow = ({ item }) => {
         const url = 'https://messari.io/asset-images/' + item.id + '/32.png'
         const latestItem = currencies?.find(ele => ele.id === item.id)
-        const price =     latestItem?.price?.toFixed(2)
+        const price = latestItem?.price?.toFixed(2)
         let changeInPrice = latestItem?.change?.toFixed(2)
         const iconProps = getTrendIconAndColor(changeInPrice)
         const swipeoutBtns = [
@@ -55,7 +56,7 @@ const HomePage = () => {
                             <Text>{item.symbol}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                                 <Icon name={iconProps.iconName} size={scale(18)} color={iconProps.iconColor} />
-                                <Text style={{color: iconProps.iconColor}}> {Math.abs(changeInPrice)}</Text>
+                                <Text style={{ color: iconProps.iconColor }}> {Math.abs(changeInPrice)}</Text>
                             </View>
                         </View>
                     </View>
@@ -70,6 +71,10 @@ const HomePage = () => {
                     data={currencies}
                     renderItem={renderRow}
                     keyExtractor={item => item.id + ''}
+                />
+                <ActionButton
+                    buttonColor={colors.brand}
+                    onPress={() => { props.navigation.navigate("Add Currency") }}
                 />
             </View>
         )
@@ -101,7 +106,8 @@ const styles = StyleSheet.create({
         width: 32,
         height: 32,
         borderRadius: 16,
-        margin: scale(10),
+        marginVertical: scale(10),
+        marginRight: scale(20),
     },
     rowContent: {
         flexDirection: 'row',
