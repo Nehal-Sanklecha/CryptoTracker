@@ -27,3 +27,16 @@ Functional components, React Navigation
 
 Redux and redux persist is used for App state management
 
+
+About Project:
+It's a cryptocurrency tracker. Data fetched from Messari.io exposed API
+https://messari.io/api/docs#operation/Get%20all%20Assets%20V2
+
+For free license, they provide only 20 currencies data in their API.
+Images for those currencies is locally stored.
+Data is refreshed in every 1 minute using react-query.
+User can add any number of currency in his list to track.
+User can delete any tracked cryptoCurrency from his list by right swipt gesture on the selected row.
+User can select and add multiple cryptocurrencies at a time to add in his list.
+User can unselect any selected currency from the list and that cryptoCurrency will be removed from his list.
+
