@@ -10,7 +10,7 @@ import AppNavigator from './app/routes';
 import NetworkLoggerTab from './app/utils/network-logger-tab'
 import { navigationRef, isReadyRef } from './app/utils/navigation-service';
 import { PersistGate } from 'redux-persist/integration/react'
-
+console.disableYellowBox = true;
 const App = () => {
   const routeNameRef = useRef();
   useEffect(() => {

@@ -64,25 +64,24 @@ const HomePage = (props) => {
             </Swipeout>
         );
     }
-    if (currencies?.length > 0) {
-        return (
-            <View style={styles.container}>
+    return (
+        <>
+            {currencies?.length > 0 && <View style={styles.container}>
                 <FlatList
                     data={currencies}
                     renderItem={renderRow}
                     keyExtractor={item => item.id + ''}
                 />
-                <ActionButton
-                    buttonColor={colors.brand}
-                    onPress={() => { props.navigation.navigate("Add Currency") }}
-                />
-            </View>
-        )
-    }
-    return (
-        <View style={styles.textContainer}>
-            <Text style={styles.placeholderText}>No Currency Added yet!</Text>
-        </View>
+
+            </View>}
+            {currencies?.length < 0 && <View style={styles.textContainer}>
+                <Text style={styles.placeholderText}>No Currency Added yet!</Text>
+            </View>}
+            <ActionButton
+                buttonColor={colors.brand}
+                onPress={() => { props.navigation.navigate("Add Currency") }}
+            />
+        </>
     )
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Dimensions, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { scale } from '../../utils/scale';
 import { useCheckInternetConnection } from './hooks';
 import colors from '../colors';
@@ -12,7 +12,7 @@ const NoInternet = () => {
             style={styles.container}
         >
             <Text style={styles.heading}>Whoops!</Text>
-            <Text style={styles.subHeadingText}>Slow or No Internet Connection!\nPlease check your internet settings.</Text>
+            <Text style={styles.subHeadingText}>Slow or No Internet Connection!Please check your internet settings.</Text>
             <TouchableOpacity
 
                 onPress={handleTryAgainPress}
@@ -37,29 +37,36 @@ const Window = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        width: Window.width,
+        flex:1,
+        height:'100%',
         zIndex: 1000,
+        width:'100%',
         position: 'absolute',
         backgroundColor: colors.white,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     button: {
         paddingVertical: scale(10),
+        paddingHorizontal: scale(30),
         borderRadius: 6,
-        width: '100%',
         alignItems: 'center',
-        backgroundColor: colors.brand
+        backgroundColor: colors.brand,
+        marginHorizontal: scale(10),
     },
     buttonText: {
         fontSize: 14,
         textTransform: 'uppercase' ,
-        color: colors.white
+        color: colors.white,
       },
       heading: {
         marginTop: scale(38),
         textAlign: 'center',
+        fontSize: 14
     },
     subHeadingText: {
-        marginTop: scale(10),
+        marginVertical: scale(20),
+        textAlign: 'center',
+        fontSize: 14
     },
 });
