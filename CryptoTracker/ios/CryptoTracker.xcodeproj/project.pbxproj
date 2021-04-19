@@ -161,7 +161,6 @@
 				0694C073E47C4236261B5093 /* Pods-CryptoTracker-tvOSTests.debug.xcconfig */,
 				5FC14FDBABD23F0F0347C7A0 /* Pods-CryptoTracker-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

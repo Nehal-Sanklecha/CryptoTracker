@@ -8,7 +8,7 @@ import Swipeout from 'react-native-swipeout';
 import { removeCurrency } from './actions';
 import { useCryptoCurrencyData } from './hooks';
 import ActionButton from 'react-native-action-button';
-
+import getLogoImage from '../assets';
 
 const HomePage = (props) => {
     useCryptoCurrencyData()
@@ -25,7 +25,6 @@ const HomePage = (props) => {
     }
 
     const renderRow = ({ item }) => {
-        const url = 'https://messari.io/asset-images/' + item.id + '/32.png'
         const latestItem = currencies?.find(ele => ele.id === item.id)
         const price = latestItem?.price?.toFixed(2)
         let changeInPrice = latestItem?.change?.toFixed(2)
@@ -42,7 +41,7 @@ const HomePage = (props) => {
                 <View style={styles.row}>
                     <View style={styles.rowImageContainer}>
                         <Image
-                            source={{ uri: url }}
+                            source={getLogoImage(item.symbol)}
                             style={styles.imageIcon}
                             resizeMode="contain"
                         />
@@ -131,6 +130,7 @@ const styles = StyleSheet.create({
     imageIcon: {
         width: 32,
         height: 32,
-        borderRadius: 16
+        borderRadius: 16,
+        backgroundColor: colors.white
     }
 })
