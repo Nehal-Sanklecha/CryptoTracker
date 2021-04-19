@@ -74,7 +74,7 @@ const HomePage = (props) => {
                 />
 
             </View>}
-            {currencies?.length < 0 && <View style={styles.textContainer}>
+            {currencies?.length === 0 && <View style={styles.textContainer}>
                 <Text style={styles.placeholderText}>No Currency Added yet!</Text>
             </View>}
             <ActionButton
